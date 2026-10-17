@@ -1,565 +1,428 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#070b10">
-<title>LOCATION // COMMAND</title>
+<meta name="theme-color" content="#03060b">
+<title>W | LOCATION SYSTEM</title>
 
 <style>
 :root {
-  --bg: #070b10;
-  --panel: #101923;
-  --line: #254455;
-  --cyan: #55eaff;
-  --green: #6affb0;
-  --text: #e8f7ff;
-  --muted: #829aa9;
+  --blue: #66b9ff;
+  --silver: #cbd9e8;
+  --muted: #9aa8bb;
+  --line: #35475d;
+  --panel: #070b13;
 }
-
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-html {
-  min-height: 100%;
-  background: var(--bg);
-}
-
-body {
+* { box-sizing: border-box; }
+html, body {
   margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background: #03060b;
+  color: #f4f7ff;
+  font-family: Arial, Helvetica, sans-serif;
+}
+body {
   min-height: 100vh;
-  color: var(--text);
   background:
-    radial-gradient(ellipse at 50% -20%, #164052 0, transparent 55%),
-    linear-gradient(135deg, #05080d, #0a1119 55%, #05080d);
-  font-family: "Segoe UI", Arial, sans-serif;
+    radial-gradient(ellipse at 50% 40%, #142033 0%, #06090f 65%, #010204 100%);
 }
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: .12;
-  background-image:
-    linear-gradient(#45dfff 1px, transparent 1px),
-    linear-gradient(90deg, #45dfff 1px, transparent 1px);
-  background-size: 35px 35px;
-}
-
-header {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 16px 4%;
-  border-bottom: 1px solid var(--line);
-  background: #071019eF;
-}
-
-.brand {
-  font-size: 19px;
-  font-weight: 800;
-  letter-spacing: 3px;
-}
-
-.brand span {
-  color: var(--cyan);
-}
-
-.status {
-  color: var(--green);
-  font-size: 10px;
-  letter-spacing: 2px;
-  white-space: nowrap;
-}
-
-.status::before {
-  content: "";
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  margin-right: 7px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 10px var(--green);
-}
-
-main {
-  position: relative;
-  width: 100%;
-  max-width: 1600px;
-  margin: auto;
-  padding: 24px 4%;
-}
-
-.eyebrow {
-  color: var(--cyan);
-  font-size: 10px;
-  letter-spacing: 4px;
-}
-
-h1 {
-  margin: 8px 0;
-  font-size: clamp(24px, 3vw, 40px);
-  letter-spacing: 2px;
-}
-
-.subtitle {
-  margin-bottom: 20px;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-button,
-.file-label {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 38px;
-  padding: 9px 13px;
-  border: 1px solid #326078;
-  border-radius: 4px;
-  color: var(--cyan);
-  background: #10202c;
-  cursor: pointer;
-  font-size: 11px;
-  letter-spacing: .5px;
-  font-family: inherit;
-}
-
-button:hover,
-.file-label:hover {
-  background: #173746;
-  box-shadow: 0 0 14px #55eaff18;
-}
-
-input,
-textarea {
-  width: 100%;
-  padding: 11px;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  color: var(--text);
-  background: #071019;
-  font: inherit;
-}
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
 
 #login {
-  max-width: 420px;
-  margin: 35px auto;
-  padding: 24px;
-  border: 1px solid var(--line);
-  background: #101923ed;
+  width: min(360px, 90%);
+  margin: 15vh auto;
+  padding: 25px;
+  background: #080d16;
+  border: 1px solid #6e829d;
+  box-shadow: 0 0 25px #4dafff17;
+}
+#login h2 { letter-spacing: 4px; }
+#login input {
+  width: 100%;
+  padding: 12px;
+  background: #03060b;
+  color: white;
+  border: 1px solid #43566e;
+  margin: 10px 0;
+}
+#login button {
+  width: 100%;
+  padding: 12px;
+  color: var(--blue);
+  border: 1px solid var(--blue);
+  background: #091624;
 }
 
-#login h2 {
-  color: var(--cyan);
+#app { display: none; }
+.stage {
+  width: min(1450px, 100%);
+  margin: auto;
+  padding: 2.2vh 3vw;
 }
-
-#app {
-  display: none;
-}
-
-.section-title {
+.topline {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  margin: 22px 0 11px;
-  font-size: 12px;
+  margin: 0 2% 12px;
+}
+.logo {
+  font-size: clamp(12px, 1.6vw, 20px);
+  letter-spacing: 5px;
+  font-weight: 900;
+}
+.logo span { color: var(--blue); }
+.live {
+  font-size: 10px;
+  color: #8effc4;
   letter-spacing: 2px;
 }
-
-.section-title span {
-  color: var(--muted);
-  font-size: 9px;
-  letter-spacing: 1px;
+.live:before {
+  content: "";
+  display: inline-block;
+  width: 7px; height: 7px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: #76ffbb;
+  box-shadow: 0 0 10px #76ffbb;
 }
 
+/* Main metallic gallery frame */
+.outer-frame {
+  position: relative;
+  padding: 12px;
+  background: linear-gradient(135deg,
+    #eff6ff 0%, #5c6c82 5%, #111925 10%,
+    #d6e3f4 15%, #222e40 19%, #05080e 24%,
+    #0a101b 75%, #dae7f6 83%, #53657e 90%, #e9f2ff 100%);
+  clip-path: polygon(
+    2% 0, 8% 0, 10% 3%, 28% 3%, 30% 0,
+    70% 0, 72% 3%, 90% 3%, 92% 0, 98% 0,
+    100% 5%, 100% 94%, 98% 100%, 2% 100%,
+    0 94%, 0 5%
+  );
+  filter: drop-shadow(0 0 12px #a7d3ff25);
+}
+.inner-frame {
+  padding: clamp(12px, 3vw, 38px) clamp(12px, 7vw, 100px);
+  background: #03060b;
+  border: 2px solid #7789a2;
+  clip-path: polygon(
+    2% 0, 8% 0, 10% 3%, 28% 3%, 30% 0,
+    70% 0, 72% 3%, 90% 3%, 92% 0, 98% 0,
+    100% 5%, 100% 94%, 98% 100%, 2% 100%,
+    0 94%, 0 5%
+  );
+}
 .gallery {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: clamp(8px, 1.6vw, 24px);
 }
-
-.photo-card {
+.photo {
   position: relative;
   min-width: 0;
+  aspect-ratio: 16 / 8;
   overflow: hidden;
-  aspect-ratio: 16 / 9;
-  border: 1px solid #254455;
-  background: #0b141e;
-  clip-path: polygon(0 0, 100% 0, 100% 90%, 95% 100%, 0 100%);
+  background:
+    linear-gradient(135deg, #111c2a, #05080d);
+  border: 2px solid #7d8ca2;
+  box-shadow: inset 0 0 0 3px #0b1019, 0 0 8px #75baff19;
 }
-
-.photo-card img {
-  display: block;
+.photo img {
   width: 100%;
   height: 100%;
+  display: block;
   object-fit: cover;
 }
-
-.placeholder {
+.empty {
+  width: 100%; height: 100%;
   display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #577483;
+  flex-direction: column;
+  color: #566b85;
   background:
-    linear-gradient(135deg, transparent 48%, #153042 49%, transparent 50%),
-    #09121b;
-  background-size: 24px 24px;
-  font-size: 10px;
-  letter-spacing: 2px;
+    linear-gradient(45deg, transparent 49%, #243346 50%, transparent 51%),
+    linear-gradient(-45deg, transparent 49%, #243346 50%, transparent 51%),
+    #080d15;
+  background-size: 35px 35px;
 }
-
-.placeholder b {
-  margin-bottom: 8px;
-  color: var(--cyan);
-  font-size: 28px;
+.empty b {
+  color: var(--blue);
+  font-size: clamp(20px, 3vw, 38px);
   font-weight: 300;
 }
-
+.empty small { letter-spacing: 3px; margin-top: 8px; }
 .photo-label {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  padding: 7px 10px;
-  color: var(--cyan);
-  background: #061019dd;
-  font-size: 9px;
+  bottom: 0; left: 0;
+  padding: 6px 12px;
+  min-width: 30%;
+  font-size: clamp(9px, 1.1vw, 13px);
+  font-weight: bold;
+  background: linear-gradient(90deg, #03060bf2, #152033db);
+  border-right: 1px solid #7789a2;
   letter-spacing: 1px;
 }
-
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 16px;
+.photo-label:after {
+  content: "";
+  display: inline-block;
+  margin-left: 9px;
+  width: 13px;
+  height: 14px;
+  vertical-align: middle;
+  transform: skew(28deg);
+  background: #a9bfd9;
 }
 
-.info-card {
-  min-width: 0;
-  padding: 14px;
-  border: 1px solid var(--line);
-  background: #101923ed;
-}
-
-.label {
-  margin-bottom: 9px;
-  color: var(--muted);
-  font-size: 9px;
-  letter-spacing: 2px;
-}
-
-.value {
-  overflow-wrap: anywhere;
-  font-size: 13px;
-}
-
-.cyan {
-  color: var(--cyan);
-}
-
-.address-card {
-  margin-top: 10px;
-  padding: 16px;
-  border: 1px solid var(--line);
-  background: #101923ed;
-}
-
-.address-card .value {
-  margin: 8px 0 14px;
-}
-
-.history {
-  display: grid;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.history-item {
+/* Decorative center insignia */
+.insignia {
+  position: relative;
+  z-index: 2;
+  width: 100px;
+  height: 35px;
+  margin: -2px auto -2px;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background: linear-gradient(135deg, #dce9fa, #18263a 40%, #7e91ac);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+.insignia span {
+  margin-top: -8px;
+  font-size: 25px;
+  font-weight: 900;
+  text-shadow: 0 0 8px var(--blue);
+}
+
+/* Lower metallic location information panel */
+.info-frame {
+  margin-top: 0;
+  padding: 7px;
+  background: linear-gradient(120deg, #e0eaf7, #536984 8%, #101a29 16%, #d3e1f2 50%, #27364b 85%, #e2ecf8);
+  clip-path: polygon(3% 0, 97% 0, 100% 15%, 100% 85%, 97% 100%, 3% 100%, 0 85%, 0 15%);
+}
+.info-inner {
+  min-height: 110px;
+  display: grid;
+  grid-template-columns: 1.45fr 1.25fr .8fr 1.2fr auto;
+  align-items: center;
+  gap: 0;
+  padding: 15px;
+  background: #050912;
+  border: 1px solid #7588a4;
+  clip-path: polygon(3% 0, 97% 0, 100% 15%, 100% 85%, 97% 100%, 3% 100%, 0 85%, 0 15%);
+}
+.datum {
+  min-width: 0;
+  min-height: 48px;
+  padding: 4px 12px;
+  border-right: 1px solid #46566d;
+}
+.datum:last-of-type { border-right: none; }
+.datum-head {
+  color: #9daec5;
+  font-size: clamp(8px, 1vw, 12px);
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.datum-value {
+  font-size: clamp(10px, 1.1vw, 14px);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.coords { color: #dcecff; }
+.icon { color: var(--blue); font-size: 18px; margin-right: 5px; }
+.map-button {
+  padding: 12px 13px;
+  margin: 5px;
+  color: var(--blue);
+  border: 1px solid #328de1;
+  background: #08182a;
+  border-radius: 5px;
+  font-size: clamp(9px, 1vw, 12px);
+  white-space: nowrap;
+}
+.map-button:hover { background: #123251; }
+
+.controls {
+  display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 13px;
-  border: 1px solid #1b3544;
-  background: #0b141e;
+  gap: 8px;
+  margin: 16px auto;
+}
+.control-button, .upload-label {
+  padding: 9px 12px;
+  color: var(--blue);
+  border: 1px solid #344e6c;
+  background: #09111e;
+  font-size: 11px;
   cursor: pointer;
 }
-
-.history-item:hover {
-  border-color: var(--cyan);
+.report-tools {
+  max-width: 800px;
+  margin: 25px auto;
+  padding: 16px;
+  border: 1px solid #26394f;
+  background: #080e17;
 }
-
-.small {
-  margin-top: 6px;
-  color: var(--muted);
-  font-size: 10px;
+.report-tools textarea,
+.report-tools input {
+  width: 100%;
+  margin: 6px 0 12px;
+  padding: 10px;
+  color: white;
+  background: #03070d;
+  border: 1px solid #34465e;
 }
-
-#reportInput {
-  min-height: 110px;
-  margin-top: 8px;
-  resize: vertical;
+.report-tools textarea { min-height: 100px; }
+#history { display: grid; gap: 8px; }
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #283b51;
+  color: #eaf3ff;
+  background: #0a111c;
+  text-align: left;
 }
+.history-item small { color: var(--muted); }
+.note { color: var(--muted); font-size: 11px; line-height: 1.5; }
 
-footer {
-  position: relative;
-  margin-top: 30px;
-  padding: 18px;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  text-align: center;
-  font-size: 9px;
-  letter-spacing: 2px;
+@media (orientation: landscape) {
+  .stage { padding: 1.5vh 2vw; }
+  .topline { margin-bottom: 8px; }
+  .inner-frame { padding: 2vh 8vw; }
+  .gallery { gap: 2vh 3vw; }
+  .photo { aspect-ratio: 16 / 7.4; }
+  .insignia { height: 27px; }
+  .info-inner { min-height: 95px; padding: 10px; }
+  .datum { padding: 3px 9px; }
+  .datum-head { margin-bottom: 5px; }
 }
-
-/* MOBILE LANDSCAPE LAYOUT */
-@media screen and (max-width: 950px) and (orientation: landscape) {
-  header {
-    padding: 8px 3%;
-  }
-
-  .brand {
-    font-size: 15px;
-    letter-spacing: 2px;
-  }
-
-  main {
-    padding: 12px 3%;
-  }
-
-  h1 {
-    font-size: 25px;
-  }
-
-  .subtitle {
-    margin-bottom: 12px;
-  }
-
-  .toolbar {
-    gap: 6px;
-    margin-bottom: 10px;
-  }
-
-  button,
-  .file-label {
-    min-height: 31px;
-    padding: 6px 9px;
-    font-size: 10px;
-  }
-
-  .section-title {
-    margin: 13px 0 8px;
-  }
-
-  .gallery {
+@media (orientation: portrait) {
+  .stage { padding: 15px 10px; }
+  .inner-frame { padding: 14px; }
+  .gallery { gap: 8px; }
+  .photo { aspect-ratio: 4 / 3; }
+  .info-inner {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    gap: 10px 0;
+    clip-path: none;
   }
-
-  .photo-card {
-    aspect-ratio: 16 / 9;
-  }
-
-  .info-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 7px;
-  }
-
-  .info-card {
-    padding: 10px;
-  }
-
-  .address-card {
-    padding: 12px;
-  }
-
-  #login {
-    margin: 12px auto;
-  }
-}
-
-/* NARROW PORTRAIT FALLBACK */
-@media screen and (orientation: portrait) and (max-width: 600px) {
-  header {
-    padding: 14px 4%;
-  }
-
-  main {
-    padding: 18px 4%;
-  }
-
-  .brand {
-    font-size: 15px;
-    letter-spacing: 1.5px;
-  }
-
-  .gallery {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 7px;
-  }
-
-  .photo-card {
-    aspect-ratio: 4 / 3;
-  }
-
-  .photo-label {
-    padding: 5px;
-    font-size: 7px;
-    letter-spacing: .5px;
-  }
-
-  .info-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  .info-frame { clip-path: none; }
+  .datum { border-right: none; border-bottom: 1px solid #29384d; }
+  .map-button { grid-column: 1 / -1; }
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="brand">LOCATION <span>//</span> COMMAND</div>
-  <div class="status">DASHBOARD READY</div>
-</header>
-
-<main>
-
 <section id="login">
-  <div class="eyebrow">SECURE ACCESS // 01</div>
-  <h2>Dashboard Access</h2>
-  <p class="subtitle">Enter your dashboard password.</p>
-  <input id="password" type="password" placeholder="Enter password">
-  <br><br>
-  <button onclick="login()">UNLOCK DASHBOARD ↗</button>
-  <p id="loginMessage" class="small"></p>
-  <p class="small">Browser-only demonstration. The password is not secure against someone inspecting this file.</p>
+  <div style="color:#66b9ff;letter-spacing:4px;font-size:11px">W // ACCESS CONTROL</div>
+  <h2>LOCATION SYSTEM</h2>
+  <p style="color:#9aa8bb;font-size:13px">Enter your dashboard password</p>
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">ACCESS DASHBOARD ↗</button>
+  <p id="loginError" class="note"></p>
 </section>
 
-<section id="app">
-  <div class="eyebrow">LOCATION INTELLIGENCE INTERFACE</div>
-  <h1>LOCATION OVERVIEW</h1>
-  <div class="subtitle">Image gallery / Location data / Report archive</div>
-
-  <div class="toolbar">
-    <label class="file-label">
-      IMPORT PHOTOS
-      <input id="photoInput" type="file" accept="image/*" multiple hidden>
-    </label>
-    <button onclick="document.getElementById('reportInput').focus()">+ NEW REPORT</button>
-    <button onclick="exportReports()">EXPORT REPORTS</button>
-    <button onclick="clearPhotos()">CLEAR PHOTOS</button>
-    <button onclick="logout()">LOCK DASHBOARD</button>
-  </div>
-
-  <div class="section-title">
-    <div>IMAGE FEED</div>
-    <span id="photoCount">04 PANELS</span>
-  </div>
-
-  <div class="gallery" id="gallery"></div>
-
-  <div class="section-title">
-    <div>LOCATION DATA</div>
-    <span>SELECTED REPORT</span>
-  </div>
-
-  <div class="info-grid">
-    <div class="info-card">
-      <div class="label">LATITUDE</div>
-      <div class="value cyan" id="lat">—</div>
+<div id="app">
+  <div class="stage">
+    <div class="topline">
+      <div class="logo">W <span>//</span> LOCATION SYSTEM</div>
+      <div class="live">DASHBOARD ONLINE</div>
     </div>
-    <div class="info-card">
-      <div class="label">LONGITUDE</div>
-      <div class="value cyan" id="lon">—</div>
+
+    <section class="outer-frame">
+      <div class="inner-frame">
+        <div class="gallery" id="gallery"></div>
+      </div>
+    </section>
+
+    <div class="insignia"><span>W</span></div>
+
+    <section class="info-frame">
+      <div class="info-inner">
+        <div class="datum">
+          <div class="datum-head"><span class="icon">◉</span> LOCATION</div>
+          <div class="datum-value" id="address">No report loaded</div>
+        </div>
+        <div class="datum">
+          <div class="datum-head"><span class="icon">⌖</span> COORDINATES</div>
+          <div class="datum-value coords" id="coords">—</div>
+        </div>
+        <div class="datum">
+          <div class="datum-head"><span class="icon">⌖</span> ACCURACY</div>
+          <div class="datum-value" id="accuracy">—</div>
+        </div>
+        <div class="datum">
+          <div class="datum-head"><span class="icon">◷</span> RECEIVED</div>
+          <div class="datum-value" id="received">—</div>
+        </div>
+        <button class="map-button" onclick="openMap()">▣ OPEN MAP ↗</button>
+      </div>
+    </section>
+
+    <div class="controls">
+      <label class="upload-label">
+        ＋ IMPORT FOUR PHOTOS
+        <input id="photos" type="file" accept="image/*" multiple hidden>
+      </label>
+      <button class="control-button" onclick="document.getElementById('reportText').focus()">+ LOCATION REPORT</button>
+      <button class="control-button" onclick="exportData()">EXPORT HISTORY</button>
+      <button class="control-button" onclick="logout()">LOCK</button>
     </div>
-    <div class="info-card">
-      <div class="label">ACCURACY</div>
-      <div class="value" id="accuracy">—</div>
-    </div>
-    <div class="info-card">
-      <div class="label">TIMESTAMP</div>
-      <div class="value" id="timestamp">—</div>
-    </div>
+
+    <section class="report-tools">
+      <div class="datum-head">IMPORT LOCATION REPORT</div>
+      <p class="note">Paste a report below to display its address, coordinates, accuracy and received time.</p>
+      <textarea id="reportText" placeholder="Address: Example street, City
+Coords: 17.3987523, 78.3808463
+Accuracy: ±22 m
+Timestamp: 2026-10-17 15:03:00"></textarea>
+      <button class="control-button" onclick="saveReport()">SAVE REPORT</button>
+
+      <div class="datum-head" style="margin-top:24px">REPORT HISTORY</div>
+      <input id="search" placeholder="Search reports..." oninput="renderHistory()">
+      <div id="history"></div>
+      <p class="note">Single-file edition: reports are stored in this browser. Discord live updates are not connected.</p>
+    </section>
   </div>
-
-  <div class="address-card">
-    <div class="label">REPORTED ADDRESS</div>
-    <div class="value" id="address">No report selected</div>
-    <div class="toolbar">
-      <button onclick="openMap()">OPEN IN GOOGLE MAPS ↗</button>
-      <button onclick="copyCoordinates()">COPY COORDINATES</button>
-    </div>
-  </div>
-
-  <div class="section-title">
-    <div>IMPORT LOCATION REPORT</div>
-    <span>PASTE REPORT TEXT</span>
-  </div>
-
-  <textarea id="reportInput" placeholder="Address: Example street, Hyderabad
-Coords: 17.3850, 78.4867
-Accuracy: ±20 m
-Timestamp: 2026-10-17 12:00"></textarea>
-
-  <br><br>
-  <button onclick="addReport()">SAVE REPORT</button>
-
-  <div class="section-title">
-    <div>REPORT HISTORY</div>
-    <span id="reportCount">0 REPORTS</span>
-  </div>
-
-  <input id="search" placeholder="Search reports..." oninput="renderHistory()">
-  <div class="history" id="history"></div>
-</section>
-</main>
-
-<footer>LOCATION // COMMAND — LANDSCAPE EDITION</footer>
+</div>
 
 <script>
-const DASHBOARD_PASSWORD = "!l9trkuh";
-const STORAGE_KEY = "locationCommandReports";
-
+const PASSWORD = "!l9trkuh";
+const KEY = "wLocationReports";
 let reports = [];
-let selectedReport = null;
+let current = null;
 let photoURLs = [];
 
 try {
-  reports = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-} catch {
+  reports = JSON.parse(localStorage.getItem(KEY) || "[]");
+} catch(e) {
   reports = [];
 }
 
 function login() {
-  if (document.getElementById("password").value === DASHBOARD_PASSWORD) {
-    document.getElementById("login").style.display = "none";
-    document.getElementById("app").style.display = "block";
-    renderGallery([]);
-    renderHistory();
-
-    if (reports.length) selectReport(0);
-  } else {
-    document.getElementById("loginMessage").textContent =
-      "Access denied. Check your password.";
+  if (document.getElementById("password").value !== PASSWORD) {
+    document.getElementById("loginError").textContent = "Incorrect password.";
+    return;
   }
+  document.getElementById("login").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  renderGallery([]);
+  renderHistory();
+  if (reports.length) selectReport(0);
 }
 
 function logout() {
@@ -572,216 +435,150 @@ document.getElementById("password").addEventListener("keydown", e => {
   if (e.key === "Enter") login();
 });
 
-function parseReport(raw) {
-  function get(...names) {
-    for (const name of names) {
-      const re = new RegExp("^\\s*" + name + "\\s*:\\s*(.+)$", "im");
-      const match = raw.match(re);
-      if (match) return match[1].trim();
-    }
-    return "";
-  }
-
-  const coordText = get("Coords", "Coordinates", "GPS");
-  const match = coordText.match(
-    /(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)/
-  );
-
-  return {
-    id: Date.now(),
-    address: get("Address", "Location") || "Address not provided",
-    lat: match ? match[1] : "",
-    lon: match ? match[2] : "",
-    accuracy: get("Accuracy") || "Not provided",
-    timestamp: get("Timestamp", "Time", "Date") || new Date().toLocaleString(),
-    raw
-  };
-}
-
-function addReport() {
-  const raw = document.getElementById("reportInput").value.trim();
-
-  if (!raw) {
-    alert("Paste a location report first.");
-    return;
-  }
-
-  reports.unshift(parseReport(raw));
-  reports = reports.slice(0, 100);
-  saveReports();
-
-  document.getElementById("reportInput").value = "";
-  selectReport(0);
-  renderHistory();
-}
-
-function saveReports() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
-  } catch {
-    alert("Browser storage is full. Export your reports and remove some data.");
-  }
-}
-
-function selectReport(index) {
-  selectedReport = reports[index];
-  if (!selectedReport) return;
-
-  document.getElementById("address").textContent =
-    selectedReport.address || "—";
-  document.getElementById("lat").textContent = selectedReport.lat || "—";
-  document.getElementById("lon").textContent = selectedReport.lon || "—";
-  document.getElementById("accuracy").textContent =
-    selectedReport.accuracy || "—";
-  document.getElementById("timestamp").textContent =
-    selectedReport.timestamp || "—";
-
-  renderHistory();
-}
-
-function renderHistory() {
-  const history = document.getElementById("history");
-  const search = (document.getElementById("search")?.value || "").toLowerCase();
-
-  history.innerHTML = "";
-
-  reports.forEach((report, index) => {
-    const text = [
-      report.address, report.lat, report.lon,
-      report.accuracy, report.timestamp, report.raw
-    ].join(" ").toLowerCase();
-
-    if (!text.includes(search)) return;
-
-    const item = document.createElement("div");
-    item.className = "history-item";
-
-    const left = document.createElement("div");
-    const title = document.createElement("strong");
-    title.textContent = report.address || "Location report";
-
-    const details = document.createElement("div");
-    details.className = "small";
-    details.textContent = report.lat && report.lon
-      ? report.lat + ", " + report.lon
-      : "Coordinates unavailable";
-
-    const right = document.createElement("div");
-    right.className = "small";
-    right.textContent = report.timestamp || "";
-
-    left.append(title, details);
-    item.append(left, right);
-    item.onclick = () => selectReport(index);
-    history.appendChild(item);
-  });
-
-  document.getElementById("reportCount").textContent =
-    reports.length + " REPORTS";
-}
-
-function openMap() {
-  if (!selectedReport || !selectedReport.lat || !selectedReport.lon) {
-    alert("This report has no valid coordinates.");
-    return;
-  }
-
-  const lat = Number(selectedReport.lat);
-  const lon = Number(selectedReport.lon);
-
-  if (!Number.isFinite(lat) || !Number.isFinite(lon) ||
-      Math.abs(lat) > 90 || Math.abs(lon) > 180) {
-    alert("The coordinates are invalid.");
-    return;
-  }
-
-  window.open(
-    "https://www.google.com/maps?q=" +
-    encodeURIComponent(lat + "," + lon),
-    "_blank",
-    "noopener,noreferrer"
-  );
-}
-
-async function copyCoordinates() {
-  if (!selectedReport || !selectedReport.lat || !selectedReport.lon) {
-    alert("No coordinates available.");
-    return;
-  }
-
-  const value = selectedReport.lat + ", " + selectedReport.lon;
-
-  try {
-    await navigator.clipboard.writeText(value);
-    alert("Coordinates copied.");
-  } catch {
-    prompt("Copy coordinates:", value);
-  }
-}
-
 function renderGallery(files) {
   photoURLs.forEach(URL.revokeObjectURL);
   photoURLs = [];
-
   const gallery = document.getElementById("gallery");
   gallery.innerHTML = "";
 
   for (let i = 0; i < 4; i++) {
     const card = document.createElement("div");
-    card.className = "photo-card";
+    card.className = "photo";
 
     if (files[i]) {
+      const img = document.createElement("img");
       const url = URL.createObjectURL(files[i]);
       photoURLs.push(url);
-
-      const img = document.createElement("img");
       img.src = url;
       img.alt = "Imported photo " + (i + 1);
       card.appendChild(img);
     } else {
-      const placeholder = document.createElement("div");
-      placeholder.className = "placeholder";
-
-      const symbol = document.createElement("b");
-      symbol.textContent = "＋";
-
-      placeholder.append(symbol, document.createTextNode("IMAGE FEED 0" + (i + 1)));
-      card.appendChild(placeholder);
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      const plus = document.createElement("b");
+      plus.textContent = "+";
+      const label = document.createElement("small");
+      label.textContent = "WAITING FOR IMAGE";
+      empty.append(plus, label);
+      card.appendChild(empty);
     }
 
-    const label = document.createElement("div");
-    label.className = "photo-label";
-    label.textContent = files[i]
-      ? "IMPORTED IMAGE // 0" + (i + 1)
-      : "IMAGE FEED // 0" + (i + 1);
-
-    card.appendChild(label);
+    const caption = document.createElement("div");
+    caption.className = "photo-label";
+    caption.textContent = "PHOTO 0" + (i + 1);
+    card.appendChild(caption);
     gallery.appendChild(card);
   }
-
-  document.getElementById("photoCount").textContent =
-    Math.min(files.length, 4) + " IMAGES LOADED";
 }
 
-document.getElementById("photoInput").addEventListener("change", event => {
-  renderGallery(Array.from(event.target.files || []));
+document.getElementById("photos").addEventListener("change", e => {
+  renderGallery(Array.from(e.target.files || []).slice(0, 4));
 });
 
-function clearPhotos() {
-  document.getElementById("photoInput").value = "";
-  renderGallery([]);
+function parseReport(raw) {
+  function get(...keys) {
+    for (const key of keys) {
+      const match = raw.match(new RegExp("^\\s*" + key + "\\s*:\\s*(.+)$", "im"));
+      if (match) return match[1].trim();
+    }
+    return "";
+  }
+
+  const coord = get("Coords", "Coordinates", "GPS");
+  const m = coord.match(/(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)/);
+
+  return {
+    id: Date.now(),
+    address: get("Address", "Location") || "Address not provided",
+    lat: m ? m[1] : "",
+    lon: m ? m[2] : "",
+    accuracy: get("Accuracy") || "—",
+    received: get("Timestamp", "Received", "Time", "Date") || new Date().toLocaleString(),
+    raw
+  };
 }
 
-function exportReports() {
+function saveReport() {
+  const raw = document.getElementById("reportText").value.trim();
+  if (!raw) return alert("Paste a location report first.");
+
+  reports.unshift(parseReport(raw));
+  reports = reports.slice(0, 100);
+
+  try {
+    localStorage.setItem(KEY, JSON.stringify(reports));
+  } catch(e) {
+    alert("Browser storage is full. Export your reports.");
+  }
+
+  document.getElementById("reportText").value = "";
+  selectReport(0);
+  renderHistory();
+}
+
+function selectReport(index) {
+  current = reports[index];
+  if (!current) return;
+
+  document.getElementById("address").textContent = current.address || "—";
+  document.getElementById("coords").textContent =
+    current.lat && current.lon ? current.lat + ", " + current.lon : "—";
+  document.getElementById("accuracy").textContent = current.accuracy || "—";
+  document.getElementById("received").textContent = current.received || "—";
+  renderHistory();
+}
+
+function openMap() {
+  if (!current || !current.lat || !current.lon) {
+    return alert("This report has no coordinates.");
+  }
+
+  const lat = Number(current.lat);
+  const lon = Number(current.lon);
+
+  if (!Number.isFinite(lat) || !Number.isFinite(lon) ||
+      Math.abs(lat) > 90 || Math.abs(lon) > 180) {
+    return alert("Invalid coordinates.");
+  }
+
+  window.open("https://www.google.com/maps?q=" +
+    encodeURIComponent(lat + "," + lon), "_blank", "noopener,noreferrer");
+}
+
+function renderHistory() {
+  const list = document.getElementById("history");
+  const query = (document.getElementById("search")?.value || "").toLowerCase();
+  list.innerHTML = "";
+
+  reports.forEach((r, i) => {
+    const haystack = [r.address, r.lat, r.lon, r.accuracy, r.received, r.raw]
+      .join(" ").toLowerCase();
+    if (!haystack.includes(query)) return;
+
+    const button = document.createElement("button");
+    button.className = "history-item";
+
+    const left = document.createElement("span");
+    left.textContent = r.address || "Location report";
+
+    const right = document.createElement("small");
+    right.textContent = r.received || "";
+
+    button.append(left, right);
+    button.onclick = () => selectReport(i);
+    list.appendChild(button);
+  });
+}
+
+function exportData() {
   const blob = new Blob([JSON.stringify(reports, null, 2)], {
     type: "application/json"
   });
-
   const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "location-reports.json";
-  link.click();
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "location-history.json";
+  a.click();
   URL.revokeObjectURL(url);
 }
 

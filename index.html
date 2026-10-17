@@ -1,0 +1,792 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070b10">
+<title>LOCATION // COMMAND</title>
+
+<style>
+:root {
+  --bg: #070b10;
+  --panel: #101923;
+  --line: #254455;
+  --cyan: #55eaff;
+  --green: #6affb0;
+  --text: #e8f7ff;
+  --muted: #829aa9;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  min-height: 100%;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 50% -20%, #164052 0, transparent 55%),
+    linear-gradient(135deg, #05080d, #0a1119 55%, #05080d);
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .12;
+  background-image:
+    linear-gradient(#45dfff 1px, transparent 1px),
+    linear-gradient(90deg, #45dfff 1px, transparent 1px);
+  background-size: 35px 35px;
+}
+
+header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 4%;
+  border-bottom: 1px solid var(--line);
+  background: #071019eF;
+}
+
+.brand {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.brand span {
+  color: var(--cyan);
+}
+
+.status {
+  color: var(--green);
+  font-size: 10px;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.status::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px var(--green);
+}
+
+main {
+  position: relative;
+  width: 100%;
+  max-width: 1600px;
+  margin: auto;
+  padding: 24px 4%;
+}
+
+.eyebrow {
+  color: var(--cyan);
+  font-size: 10px;
+  letter-spacing: 4px;
+}
+
+h1 {
+  margin: 8px 0;
+  font-size: clamp(24px, 3vw, 40px);
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  margin-bottom: 20px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+button,
+.file-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 9px 13px;
+  border: 1px solid #326078;
+  border-radius: 4px;
+  color: var(--cyan);
+  background: #10202c;
+  cursor: pointer;
+  font-size: 11px;
+  letter-spacing: .5px;
+  font-family: inherit;
+}
+
+button:hover,
+.file-label:hover {
+  background: #173746;
+  box-shadow: 0 0 14px #55eaff18;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--text);
+  background: #071019;
+  font: inherit;
+}
+
+#login {
+  max-width: 420px;
+  margin: 35px auto;
+  padding: 24px;
+  border: 1px solid var(--line);
+  background: #101923ed;
+}
+
+#login h2 {
+  color: var(--cyan);
+}
+
+#app {
+  display: none;
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin: 22px 0 11px;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.section-title span {
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.photo-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border: 1px solid #254455;
+  background: #0b141e;
+  clip-path: polygon(0 0, 100% 0, 100% 90%, 95% 100%, 0 100%);
+}
+
+.photo-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #577483;
+  background:
+    linear-gradient(135deg, transparent 48%, #153042 49%, transparent 50%),
+    #09121b;
+  background-size: 24px 24px;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.placeholder b {
+  margin-bottom: 8px;
+  color: var(--cyan);
+  font-size: 28px;
+  font-weight: 300;
+}
+
+.photo-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 7px 10px;
+  color: var(--cyan);
+  background: #061019dd;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.info-card {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: #101923ed;
+}
+
+.label {
+  margin-bottom: 9px;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.value {
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+
+.cyan {
+  color: var(--cyan);
+}
+
+.address-card {
+  margin-top: 10px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: #101923ed;
+}
+
+.address-card .value {
+  margin: 8px 0 14px;
+}
+
+.history {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.history-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid #1b3544;
+  background: #0b141e;
+  cursor: pointer;
+}
+
+.history-item:hover {
+  border-color: var(--cyan);
+}
+
+.small {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+#reportInput {
+  min-height: 110px;
+  margin-top: 8px;
+  resize: vertical;
+}
+
+footer {
+  position: relative;
+  margin-top: 30px;
+  padding: 18px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+/* MOBILE LANDSCAPE LAYOUT */
+@media screen and (max-width: 950px) and (orientation: landscape) {
+  header {
+    padding: 8px 3%;
+  }
+
+  .brand {
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
+
+  main {
+    padding: 12px 3%;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+
+  .subtitle {
+    margin-bottom: 12px;
+  }
+
+  .toolbar {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  button,
+  .file-label {
+    min-height: 31px;
+    padding: 6px 9px;
+    font-size: 10px;
+  }
+
+  .section-title {
+    margin: 13px 0 8px;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .photo-card {
+    aspect-ratio: 16 / 9;
+  }
+
+  .info-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .info-card {
+    padding: 10px;
+  }
+
+  .address-card {
+    padding: 12px;
+  }
+
+  #login {
+    margin: 12px auto;
+  }
+}
+
+/* NARROW PORTRAIT FALLBACK */
+@media screen and (orientation: portrait) and (max-width: 600px) {
+  header {
+    padding: 14px 4%;
+  }
+
+  main {
+    padding: 18px 4%;
+  }
+
+  .brand {
+    font-size: 15px;
+    letter-spacing: 1.5px;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .photo-card {
+    aspect-ratio: 4 / 3;
+  }
+
+  .photo-label {
+    padding: 5px;
+    font-size: 7px;
+    letter-spacing: .5px;
+  }
+
+  .info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">LOCATION <span>//</span> COMMAND</div>
+  <div class="status">DASHBOARD READY</div>
+</header>
+
+<main>
+
+<section id="login">
+  <div class="eyebrow">SECURE ACCESS // 01</div>
+  <h2>Dashboard Access</h2>
+  <p class="subtitle">Enter your dashboard password.</p>
+  <input id="password" type="password" placeholder="Enter password">
+  <br><br>
+  <button onclick="login()">UNLOCK DASHBOARD ↗</button>
+  <p id="loginMessage" class="small"></p>
+  <p class="small">Browser-only demonstration. The password is not secure against someone inspecting this file.</p>
+</section>
+
+<section id="app">
+  <div class="eyebrow">LOCATION INTELLIGENCE INTERFACE</div>
+  <h1>LOCATION OVERVIEW</h1>
+  <div class="subtitle">Image gallery / Location data / Report archive</div>
+
+  <div class="toolbar">
+    <label class="file-label">
+      IMPORT PHOTOS
+      <input id="photoInput" type="file" accept="image/*" multiple hidden>
+    </label>
+    <button onclick="document.getElementById('reportInput').focus()">+ NEW REPORT</button>
+    <button onclick="exportReports()">EXPORT REPORTS</button>
+    <button onclick="clearPhotos()">CLEAR PHOTOS</button>
+    <button onclick="logout()">LOCK DASHBOARD</button>
+  </div>
+
+  <div class="section-title">
+    <div>IMAGE FEED</div>
+    <span id="photoCount">04 PANELS</span>
+  </div>
+
+  <div class="gallery" id="gallery"></div>
+
+  <div class="section-title">
+    <div>LOCATION DATA</div>
+    <span>SELECTED REPORT</span>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="label">LATITUDE</div>
+      <div class="value cyan" id="lat">—</div>
+    </div>
+    <div class="info-card">
+      <div class="label">LONGITUDE</div>
+      <div class="value cyan" id="lon">—</div>
+    </div>
+    <div class="info-card">
+      <div class="label">ACCURACY</div>
+      <div class="value" id="accuracy">—</div>
+    </div>
+    <div class="info-card">
+      <div class="label">TIMESTAMP</div>
+      <div class="value" id="timestamp">—</div>
+    </div>
+  </div>
+
+  <div class="address-card">
+    <div class="label">REPORTED ADDRESS</div>
+    <div class="value" id="address">No report selected</div>
+    <div class="toolbar">
+      <button onclick="openMap()">OPEN IN GOOGLE MAPS ↗</button>
+      <button onclick="copyCoordinates()">COPY COORDINATES</button>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <div>IMPORT LOCATION REPORT</div>
+    <span>PASTE REPORT TEXT</span>
+  </div>
+
+  <textarea id="reportInput" placeholder="Address: Example street, Hyderabad
+Coords: 17.3850, 78.4867
+Accuracy: ±20 m
+Timestamp: 2026-10-17 12:00"></textarea>
+
+  <br><br>
+  <button onclick="addReport()">SAVE REPORT</button>
+
+  <div class="section-title">
+    <div>REPORT HISTORY</div>
+    <span id="reportCount">0 REPORTS</span>
+  </div>
+
+  <input id="search" placeholder="Search reports..." oninput="renderHistory()">
+  <div class="history" id="history"></div>
+</section>
+</main>
+
+<footer>LOCATION // COMMAND — LANDSCAPE EDITION</footer>
+
+<script>
+const DASHBOARD_PASSWORD = "!l9trkuh";
+const STORAGE_KEY = "locationCommandReports";
+
+let reports = [];
+let selectedReport = null;
+let photoURLs = [];
+
+try {
+  reports = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+} catch {
+  reports = [];
+}
+
+function login() {
+  if (document.getElementById("password").value === DASHBOARD_PASSWORD) {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    renderGallery([]);
+    renderHistory();
+
+    if (reports.length) selectReport(0);
+  } else {
+    document.getElementById("loginMessage").textContent =
+      "Access denied. Check your password.";
+  }
+}
+
+function logout() {
+  document.getElementById("app").style.display = "none";
+  document.getElementById("login").style.display = "block";
+  document.getElementById("password").value = "";
+}
+
+document.getElementById("password").addEventListener("keydown", e => {
+  if (e.key === "Enter") login();
+});
+
+function parseReport(raw) {
+  function get(...names) {
+    for (const name of names) {
+      const re = new RegExp("^\\s*" + name + "\\s*:\\s*(.+)$", "im");
+      const match = raw.match(re);
+      if (match) return match[1].trim();
+    }
+    return "";
+  }
+
+  const coordText = get("Coords", "Coordinates", "GPS");
+  const match = coordText.match(
+    /(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)/
+  );
+
+  return {
+    id: Date.now(),
+    address: get("Address", "Location") || "Address not provided",
+    lat: match ? match[1] : "",
+    lon: match ? match[2] : "",
+    accuracy: get("Accuracy") || "Not provided",
+    timestamp: get("Timestamp", "Time", "Date") || new Date().toLocaleString(),
+    raw
+  };
+}
+
+function addReport() {
+  const raw = document.getElementById("reportInput").value.trim();
+
+  if (!raw) {
+    alert("Paste a location report first.");
+    return;
+  }
+
+  reports.unshift(parseReport(raw));
+  reports = reports.slice(0, 100);
+  saveReports();
+
+  document.getElementById("reportInput").value = "";
+  selectReport(0);
+  renderHistory();
+}
+
+function saveReports() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
+  } catch {
+    alert("Browser storage is full. Export your reports and remove some data.");
+  }
+}
+
+function selectReport(index) {
+  selectedReport = reports[index];
+  if (!selectedReport) return;
+
+  document.getElementById("address").textContent =
+    selectedReport.address || "—";
+  document.getElementById("lat").textContent = selectedReport.lat || "—";
+  document.getElementById("lon").textContent = selectedReport.lon || "—";
+  document.getElementById("accuracy").textContent =
+    selectedReport.accuracy || "—";
+  document.getElementById("timestamp").textContent =
+    selectedReport.timestamp || "—";
+
+  renderHistory();
+}
+
+function renderHistory() {
+  const history = document.getElementById("history");
+  const search = (document.getElementById("search")?.value || "").toLowerCase();
+
+  history.innerHTML = "";
+
+  reports.forEach((report, index) => {
+    const text = [
+      report.address, report.lat, report.lon,
+      report.accuracy, report.timestamp, report.raw
+    ].join(" ").toLowerCase();
+
+    if (!text.includes(search)) return;
+
+    const item = document.createElement("div");
+    item.className = "history-item";
+
+    const left = document.createElement("div");
+    const title = document.createElement("strong");
+    title.textContent = report.address || "Location report";
+
+    const details = document.createElement("div");
+    details.className = "small";
+    details.textContent = report.lat && report.lon
+      ? report.lat + ", " + report.lon
+      : "Coordinates unavailable";
+
+    const right = document.createElement("div");
+    right.className = "small";
+    right.textContent = report.timestamp || "";
+
+    left.append(title, details);
+    item.append(left, right);
+    item.onclick = () => selectReport(index);
+    history.appendChild(item);
+  });
+
+  document.getElementById("reportCount").textContent =
+    reports.length + " REPORTS";
+}
+
+function openMap() {
+  if (!selectedReport || !selectedReport.lat || !selectedReport.lon) {
+    alert("This report has no valid coordinates.");
+    return;
+  }
+
+  const lat = Number(selectedReport.lat);
+  const lon = Number(selectedReport.lon);
+
+  if (!Number.isFinite(lat) || !Number.isFinite(lon) ||
+      Math.abs(lat) > 90 || Math.abs(lon) > 180) {
+    alert("The coordinates are invalid.");
+    return;
+  }
+
+  window.open(
+    "https://www.google.com/maps?q=" +
+    encodeURIComponent(lat + "," + lon),
+    "_blank",
+    "noopener,noreferrer"
+  );
+}
+
+async function copyCoordinates() {
+  if (!selectedReport || !selectedReport.lat || !selectedReport.lon) {
+    alert("No coordinates available.");
+    return;
+  }
+
+  const value = selectedReport.lat + ", " + selectedReport.lon;
+
+  try {
+    await navigator.clipboard.writeText(value);
+    alert("Coordinates copied.");
+  } catch {
+    prompt("Copy coordinates:", value);
+  }
+}
+
+function renderGallery(files) {
+  photoURLs.forEach(URL.revokeObjectURL);
+  photoURLs = [];
+
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
+
+  for (let i = 0; i < 4; i++) {
+    const card = document.createElement("div");
+    card.className = "photo-card";
+
+    if (files[i]) {
+      const url = URL.createObjectURL(files[i]);
+      photoURLs.push(url);
+
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = "Imported photo " + (i + 1);
+      card.appendChild(img);
+    } else {
+      const placeholder = document.createElement("div");
+      placeholder.className = "placeholder";
+
+      const symbol = document.createElement("b");
+      symbol.textContent = "＋";
+
+      placeholder.append(symbol, document.createTextNode("IMAGE FEED 0" + (i + 1)));
+      card.appendChild(placeholder);
+    }
+
+    const label = document.createElement("div");
+    label.className = "photo-label";
+    label.textContent = files[i]
+      ? "IMPORTED IMAGE // 0" + (i + 1)
+      : "IMAGE FEED // 0" + (i + 1);
+
+    card.appendChild(label);
+    gallery.appendChild(card);
+  }
+
+  document.getElementById("photoCount").textContent =
+    Math.min(files.length, 4) + " IMAGES LOADED";
+}
+
+document.getElementById("photoInput").addEventListener("change", event => {
+  renderGallery(Array.from(event.target.files || []));
+});
+
+function clearPhotos() {
+  document.getElementById("photoInput").value = "";
+  renderGallery([]);
+}
+
+function exportReports() {
+  const blob = new Blob([JSON.stringify(reports, null, 2)], {
+    type: "application/json"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "location-reports.json";
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+renderGallery([]);
+renderHistory();
+</script>
+</body>
+</html>
